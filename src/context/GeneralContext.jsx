@@ -8,7 +8,7 @@ export const GeneralProvider = ({children}) => {
     const [recipeToSearch, setRecipeToSearch] = useState("chicken");
     const [howManyPages, setHowManyPages] = useState(0);
     const [pageNow, setPageNow] = useState(0);
-    const howManyElPerPage = 5;
+    const howManyElPerPage = 6;
     
     const CallApi = async() => {
         const req = await axios.get(`https://api.edamam.com/api/recipes/v2?type=public&q=${recipeToSearch}&app_id=954b9052&app_key=%20f7a5bbdb740916cd6457971923676d01`);
@@ -20,14 +20,17 @@ export const GeneralProvider = ({children}) => {
     }, [recipeToSearch])
 
     useEffect(() => {
-        setHowManyPages(allRecipes / howManyElPerPage)
+        setHowManyPages(Math.ceil(allRecipes.length / howManyElPerPage))
     }, [allRecipes])
 
     const data = {
         allRecipes: allRecipes,
         recipeToSearch: recipeToSearch,
         setRecipeToSearch: setRecipeToSearch,
-        howManyPages: howManyPages
+        howManyPages: howManyPages, 
+        pageNow: pageNow,
+        setPageNow: setPageNow,
+        howManyElPerPage: howManyElPerPage
     };
 
     return (

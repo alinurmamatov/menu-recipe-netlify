@@ -2,9 +2,13 @@ import {Card, CardHeader, CardContent, Divider, CardMedia, Grid, Button, Box} fr
 import {useContext} from 'react';
 import { RecipiesContext } from '../context/GeneralContext';
 import {Link} from 'react-router-dom';
+import Pagination from './Pagination';
 
 function Recipes() {
-    const {allRecipes} = useContext(RecipiesContext);
+    const {allRecipes, howManyElPerPage, pageNow} = useContext(RecipiesContext);
+    const start = pageNow * howManyElPerPage;
+    const end = start + howManyElPerPage;
+    const recipesToShow = allRecipes.slice(start, end);
 
     const styleHeader = {
         height: 50
@@ -15,7 +19,7 @@ function Recipes() {
         <h1>Recipes</h1>
         <Grid container spacing={2} style={styleHeader}>
             {
-                allRecipes.map((recipe) => (
+                recipesToShow.map((recipe) => (
                     <Grid item xs={6} md={3}>
                         <Card>
                             <CardHeader title={recipe.recipe.label}/>
@@ -28,6 +32,9 @@ function Recipes() {
                     </Grid>
                 ))
             }
+            <Grid item xs={12} >
+                <Pagination/>
+            </Grid>
         </Grid>
         </>
     )
